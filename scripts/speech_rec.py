@@ -53,6 +53,9 @@ class speech_to_text_node:
         except sr.RequestError as e:
             print("Could not request results from Google Speech Recognition service; {0}".format(e))
             self.text = ""
+        except sr.UnknownValueError:
+            print("Google Speech Recognition could not understand audio")
+            self.text = ""
         return self.text
 
     def nav_template_matching(self, text):
@@ -91,10 +94,11 @@ class speech_to_text_node:
                         capture_img(True)
                     except rospy.ServiceException as e:
                         print("Service call failed: {0}".format(e))
+            self.rate.sleep()
                     
 
 if __name__ == "__main__":
     rg = speech_to_text_node()
-    while not rospy.is_shutdown():
-        rg.spin()
-        rg.rate.sleep()
+    # while not rospy.is_shutdown():
+    rg.spin()
+        # rg.rate.sleep()

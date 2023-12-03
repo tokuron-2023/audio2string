@@ -122,6 +122,7 @@ class speech_to_text_node:
                         print("Service call failed: {0}".format(e))
 
                 self.wait_for_hello()
+                self.rate.sleep()
 
                 self.new_message_received = False
 
