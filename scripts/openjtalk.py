@@ -4,13 +4,13 @@
 import subprocess
 import rospy
 from datetime import datetime
-from std_srvs.srv import SetBool
+from std_srvs.srv import SetBool, SetBoolResponse
 
 class openjtalk_node():
     def __init__(self):
         rospy.init_node("openjtalk")
-        rospy.Service("start_nav", SetBool, self.start_srv)
-        rospy.Service("capture_img", SetBool, self.capture_srv)
+        rospy.Service("/openjtalk/start_nav", SetBool, self.start_srv)
+        rospy.Service("/openjtalk/capture_img", SetBool, self.capture_srv)
         rospy.spin()
 
     def jtalk(self, text, voice="f"):
@@ -40,18 +40,22 @@ class openjtalk_node():
     def start_srv(self, req):
         if req.data:
             self.say_start()
-        return True
-
+            return SetBoolResponse(True, "Start nav successfully")
+        else:
+            return SetBoolResponse(False, "Invalid request")
+        
     def capture_srv(self, req):
         if req.data:
             self.say_capture()
-        return True
+            return SetBoolResponse(True, "Image captured successfully")
+        else:
+            return SetBoolResponse(False, "Invalid request")
     
     def say_start(self):
         # d = datetime.now()
         # text = '%s月%s日、%s時%s分%s秒' % (d.month, d.day, d.hour, d.minute, d.second)
         # self.jtalk(text)
-        rospy.wait_for_service("start_nav")
+        # rospy.wait_for_service("start_nav")
         try:
             text = '案内を開始します'
             self.jtalk(text)
