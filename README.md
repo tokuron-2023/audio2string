@@ -22,11 +22,16 @@ cd ~/catkin_ws/src
 git clone https://github.com/YukiTakahashi4690/tokuron.git
 catkin build tokuron
 ```
-* ライブラリのinstall
+* ライブラリのinstall（for speech_rec.py & speech_rec_chat.py）  
 ```
 pip3 install SpeechRecognition
 sudo apt-get install portaudio19-dev  
 pip3 install PyAudio  
+```
+* ライブラリのinstall（for openjtalk.py）
+```
+sudo apt install open-jtalk
+sudo apt-get install open-jtalk open-jtalk-mecab-naist-jdic hts-voice-nitech-jp-atr503-m001
 ```
 ## 使い方  
 ```  
@@ -47,6 +52,11 @@ python3 speech_rec_chat.py
 > 写真はscripts内に保存されます
 ```
 python3 camera_capture.py  
+```
+- テキストの読み上げ
+> ファイル内のテキストを変更することで任意の文章を読み上げます
+```
+python3 openjtalk.py
 ```
 - まとめて起動
 ```
