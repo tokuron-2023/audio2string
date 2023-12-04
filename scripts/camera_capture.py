@@ -6,7 +6,7 @@ from std_srvs.srv import SetBool
 class camera_capture_node():
     def __init__(self):
         rospy.init_node("camera_capture")
-        rospy.Service("capture_img", SetBool, self.capture_srv)
+        rospy.Service("/capture_img", SetBool, self.capture_srv)
         # rospy.Service("start_nav", SetBool, self.capture_srv)
         rospy.spin()
 
@@ -17,7 +17,7 @@ class camera_capture_node():
 
     def capture(self):
         # rospy.wait_for_service("start_nav")
-        rospy.wait_for_service("capture_img")
+        rospy.wait_for_service("/capture_img")
         #select port nu)mber(0, 1, 2, ...)
         cap = cv2.VideoCapture(0)
         ret, frame = cap.read()

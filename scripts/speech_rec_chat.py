@@ -29,18 +29,26 @@ class speech_to_text_node:
     def start_nav_srv(self, req):
         if req.data:
             rospy.loginfo("Service 'start_nav' called with True")
-            while not self.new_message_received:
-                pass
+            self.new_message_received = True
+            rospy.sleep(3)
+            # while self.new_message_received:
+            #     pass
             self.new_message_received = False
-        return {"success": True, "message": "Service called successfully"}
+            return {"success": True, "message": "Service called successfully"}
+        else:
+            return {"success": False, "message": "Invalid request"}
     
     def capture_img_srv(self, req):
         if req.data:
             rospy.loginfo("Service 'capture_srv' called with True")
-            while not self.new_message_received:
-                pass
+            self.new_message_received = True
+            rospy.sleep(3)
+            # while self.new_message_received:
+            #     pass
             self.new_message_received = False
-        return {"success": True, "message": "Service called successfully"}
+            return {"success": True, "message": "Service called successfully"}
+        else:
+            return {"success": False, "message": "Invalid request"}
     
     def get_audio(self):
         with self.mic as source:
@@ -89,7 +97,8 @@ class speech_to_text_node:
         while not rospy.is_shutdown():
             self.wait_for_hello()
 
-            self.new_message_received = True
+            # self.new_message_received = True
+            self.new_message_received = False
             print("こんにちは, 何かご用ですか？")
 
             audio = self.get_audio()
@@ -105,8 +114,9 @@ class speech_to_text_node:
                         start_nav = rospy.ServiceProxy("start_nav", SetBool)
                         start_nav(True)
                         
-                        # 「こんにちは」が来るまで待機
-                        self.wait_for_hello()
+                        while self.new_message_received:
+                            pass
+
                     except rospy.ServiceException as e:
                         print("Service call failed: {0}".format(e))
 
@@ -115,16 +125,17 @@ class speech_to_text_node:
                     try: 
                         capture_img = rospy.ServiceProxy("capture_img", SetBool)
                         capture_img(True)
-                        
-                        # 「こんにちは」が来るまで待機
-                        self.wait_for_hello()
+
+                        while self.new_message_received:
+                            pass
+
                     except rospy.ServiceException as e:
                         print("Service call failed: {0}".format(e))
 
-                self.wait_for_hello()
+                # self.wait_for_hello()
                 self.rate.sleep()
 
-                self.new_message_received = False
+        self.new_message_received = False
 
 if __name__ == "__main__":
     rg = speech_to_text_node()

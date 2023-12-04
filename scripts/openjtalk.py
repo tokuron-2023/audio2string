@@ -26,13 +26,16 @@ class openjtalk_node():
         speed = ['-r','1.0']
         outwav = ['-ow','test.wav']
         cmd = open_jtalk+mecab_dict+htsvoice+speed+outwav
-        c = subprocess.Popen(cmd,stdin=subprocess.PIPE)
-        c.stdin.write(text.encode('utf-8'))
-        c.stdin.close()
-        c.wait()
-        # aplay = ['aplay','-q','test.wav','-Dhw:1,0']
-        aplay = ['aplay', '-q', 'test.wav', '-Dsysdefault']
-        wr = subprocess.Popen(aplay)
+        try:
+            c = subprocess.Popen(cmd,stdin=subprocess.PIPE)
+            c.stdin.write(text.encode('utf-8'))
+            c.stdin.close()
+            c.wait()
+            # aplay = ['aplay','-q','test.wav','-Dhw:1,0']
+            aplay = ['aplay', '-q', 'test.wav', '-Dsysdefault']
+            wr = subprocess.Popen(aplay)
+        except Exception as e:
+            print(f"jtalkでエラーが発生しました: {e}")
 
     def start_srv(self, req):
         if req.data:
@@ -48,7 +51,7 @@ class openjtalk_node():
         # d = datetime.now()
         # text = '%s月%s日、%s時%s分%s秒' % (d.month, d.day, d.hour, d.minute, d.second)
         # self.jtalk(text)
-        # # rospy.wait_for_service("start_nav")
+        rospy.wait_for_service("start_nav")
         try:
             text = '案内を開始します'
             self.jtalk(text)
@@ -59,7 +62,7 @@ class openjtalk_node():
     def say_capture(self):
         # rospy.wait_for_service("capture_img")
         try:
-            text = "撮影します"
+            text = '撮影します'
             self.jtalk(text)
             print("撮影します")
         except Exception as e:
