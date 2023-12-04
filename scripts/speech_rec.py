@@ -19,19 +19,6 @@ class speech_to_text_node:
 
         self.nav_templates = ["ナビゲーション", "開始"]
         self.img_templates = ["写真", "撮影"]
-
-        rospy.Service("/start_nav", SetBool, self.start_nav_srv)
-        rospy.Service("/capture_img", SetBool, self.capture_img_srv)
-
-    def start_nav_srv(self, req):
-        if req.data:
-            rospy.loginfo("Service 'start_nav' called with True")
-        return {"success": True, "message": "Service called successfully"}
-    
-    def capture_img_srv(self, req):
-        if req.data:
-            rospy.loginfo("Service 'capture_srv' called with True")
-        return {"success": True, "message": "Service called successfully"}
     
     def get_audio(self):
         # 'Enter' キーが押されるまで待機

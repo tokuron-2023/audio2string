@@ -21,34 +21,7 @@ class speech_to_text_node:
         self.img_templates = ["写真", "撮影"]
         self.chat_templates = ["こんにちは"]
 
-        rospy.Service("start_nav", SetBool, self.start_nav_srv)
-        rospy.Service("capture_img", SetBool, self.capture_img_srv)
-
         self.new_message_received = False
-
-    def start_nav_srv(self, req):
-        if req.data:
-            rospy.loginfo("Service 'start_nav' called with True")
-            self.new_message_received = True
-            rospy.sleep(3)
-            # while self.new_message_received:
-            #     pass
-            self.new_message_received = False
-            return {"success": True, "message": "Service called successfully"}
-        else:
-            return {"success": False, "message": "Invalid request"}
-    
-    def capture_img_srv(self, req):
-        if req.data:
-            rospy.loginfo("Service 'capture_srv' called with True")
-            self.new_message_received = True
-            rospy.sleep(3)
-            # while self.new_message_received:
-            #     pass
-            self.new_message_received = False
-            return {"success": True, "message": "Service called successfully"}
-        else:
-            return {"success": False, "message": "Invalid request"}
     
     def get_audio(self):
         with self.mic as source:
@@ -113,6 +86,12 @@ class speech_to_text_node:
                     try: 
                         start_nav = rospy.ServiceProxy("start_nav", SetBool)
                         start_nav(True)
+                        try:
+                            rospy.wait_for_service("/openjtalk/start_nav")
+                            jtalk_start_nav = rospy.ServiceProxy("/openjtalk/start_nav", SetBool)
+                            jtalk_start_nav(True)
+                        except rospy.ServiceException as e:
+                            print("Service call failed: {0}".format(e))
                         
                         while self.new_message_received:
                             pass
@@ -125,6 +104,12 @@ class speech_to_text_node:
                     try: 
                         capture_img = rospy.ServiceProxy("capture_img", SetBool)
                         capture_img(True)
+                        try:
+                            rospy.wait_for_service("/openjtalk/capture_img")
+                            jtalk_capture_img = rospy.ServiceProxy("/openjtalk/capture_img", SetBool)
+                            jtalk_capture_img(True)
+                        except rospy.ServiceException as e:
+                            print("Service call failed: {0}".format(e))
 
                         while self.new_message_received:
                             pass
