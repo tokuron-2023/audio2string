@@ -86,12 +86,12 @@ class speech_to_text_node:
                     try: 
                         start_nav = rospy.ServiceProxy("start_nav", SetBool)
                         start_nav(True)
-                        try:
-                            rospy.wait_for_service("/openjtalk/start_nav")
-                            jtalk_start_nav = rospy.ServiceProxy("/openjtalk/start_nav", SetBool)
-                            jtalk_start_nav(True)
-                        except rospy.ServiceException as e:
-                            print("Service call failed: {0}".format(e))
+                        # try:
+                        #     rospy.wait_for_service("/openjtalk/start_nav")
+                        #     jtalk_start_nav = rospy.ServiceProxy("/openjtalk/start_nav", SetBool)
+                        #     jtalk_start_nav(True)
+                        # except rospy.ServiceException as e:
+                        #     print("Service call failed: {0}".format(e))
                         
                         while self.new_message_received:
                             pass
@@ -104,12 +104,12 @@ class speech_to_text_node:
                     try: 
                         capture_img = rospy.ServiceProxy("capture_img", SetBool)
                         capture_img(True)
-                        try:
-                            rospy.wait_for_service("/openjtalk/capture_img")
-                            jtalk_capture_img = rospy.ServiceProxy("/openjtalk/capture_img", SetBool)
-                            jtalk_capture_img(True)
-                        except rospy.ServiceException as e:
-                            print("Service call failed: {0}".format(e))
+                        # try:
+                        #     rospy.wait_for_service("/openjtalk/capture_img")
+                        #     jtalk_capture_img = rospy.ServiceProxy("/openjtalk/capture_img", SetBool)
+                        #     jtalk_capture_img(True)
+                        # except rospy.ServiceException as e:
+                        #     print("Service call failed: {0}".format(e))
 
                         while self.new_message_received:
                             pass

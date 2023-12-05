@@ -12,7 +12,7 @@ class camera_capture_node():
         rospy.Service("capture_img", SetBool, self.capture_srv)
         # rospy.Service("start_nav", SetBool, self.capture_srv)
         self.start_time = time.strftime("%Y%m%d_%H:%M:%S")
-        self.path = roslib.packages.get_pkg_dir('tokuron') + '/data/'
+        self.path = roslib.packages.get_pkg_dir('audio2string') + '/data/'
         os.makedirs(self.path + self.start_time)
         rospy.spin()
 

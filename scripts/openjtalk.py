@@ -5,12 +5,16 @@ import subprocess
 import rospy
 from datetime import datetime
 from std_srvs.srv import SetBool, SetBoolResponse
+from std_msgs.msg import String
 
 class openjtalk_node():
     def __init__(self):
         rospy.init_node("openjtalk")
-        rospy.Service("/openjtalk/start_nav", SetBool, self.start_srv)
-        rospy.Service("/openjtalk/capture_img", SetBool, self.capture_srv)
+        # rospy.Service("/openjtalk/start_nav", SetBool, self.start_srv)
+        # rospy.Service("/openjtalk/capture_img", SetBool, self.capture_srv)
+        rospy.Subscriber("/speech_to_text", String, self.callback)
+        self.template = ["案内"]
+
         rospy.spin()
 
     def jtalk(self, text, voice="f"):
@@ -37,40 +41,66 @@ class openjtalk_node():
         except Exception as e:
             print(f"jtalkでエラーが発生しました: {e}")
 
-    def start_srv(self, req):
-        if req.data:
-            self.say_start()
-            return SetBoolResponse(True, "Start nav successfully")
-        else:
-            return SetBoolResponse(False, "Invalid request")
-        
-    def capture_srv(self, req):
-        if req.data:
-            self.say_capture()
-            return SetBoolResponse(True, "Image captured successfully")
-        else:
-            return SetBoolResponse(False, "Invalid request")
-    
-    def say_start(self):
-        # d = datetime.now()
-        # text = '%s月%s日、%s時%s分%s秒' % (d.month, d.day, d.hour, d.minute, d.second)
-        # self.jtalk(text)
-        # rospy.wait_for_service("start_nav")
-        try:
+    def callback(self, data):
+            self.received_msg = data.data
+            self.speech_template_matching()
+
+    def speech_template_matching(self):
+        if "案内" in self.received_msg:
             text = '案内を開始します'
             self.jtalk(text)
             print("案内を開始します")
-        except Exception as e:
-            print(f"エラーが発生しました: {e}")
-    
-    def say_capture(self):
-        # rospy.wait_for_service("capture_img")
-        try:
+        elif "ナビゲーション" in self.received_msg:
+            text = 'ナビゲーションを開始します'
+            self.jtalk(text)
+            print("ナビゲーションを開始します")
+        elif "撮影" in self.received_msg:
             text = '撮影します'
             self.jtalk(text)
             print("撮影します")
-        except Exception as e:
-            print(f"エラーが発生しました: {e}")
+        elif "写真" in self.received_msg:
+            text = '写真を撮ります'
+            self.jtalk(text)
+            print("写真を撮ります")
+        else:
+            pass
+
+    # def start_srv(self, req):
+    #     if req.data:
+    #         self.say_start()
+    #         return SetBoolResponse(True, "Start nav successfully")
+    #     else:
+    #         return SetBoolResponse(False, "Invalid request")
+        
+    # def capture_srv(self, req):
+    #     if req.data:
+    #         self.say_capture()
+    #         return SetBoolResponse(True, "Image captured successfully")
+    #     else:
+    #         return SetBoolResponse(False, "Invalid request")
+    
+    # def say_start(self):
+    #     # d = datetime.now()
+    #     # text = '%s月%s日、%s時%s分%s秒' % (d.month, d.day, d.hour, d.minute, d.second)
+    #     # self.jtalk(text)
+    #     # rospy.wait_for_service("start_nav")
+    #     try:
+    #         text = '案内を開始します'
+    #         self.jtalk(text)
+    #         print("案内を開始します")
+    #     except Exception as e:
+    #         print(f"エラーが発生しました: {e}")
+    
+    # def say_capture(self):
+    #     # rospy.wait_for_service("capture_img")
+    #     try:
+    #         text = '撮影します'
+    #         self.jtalk(text)
+    #         print("撮影します")
+    #     except Exception as e:
+    #         print(f"エラーが発生しました: {e}")
 
 if __name__ == '__main__':
     openjtalk_node()
+    # openjtalk = openjtalk_node()
+    # openjtalk.speech_template_matching()
