@@ -13,7 +13,7 @@ class openjtalk_node():
         # rospy.Service("/openjtalk/start_nav", SetBool, self.start_srv)
         # rospy.Service("/openjtalk/capture_img", SetBool, self.capture_srv)
         rospy.Subscriber("/speech_to_text", String, self.callback)
-        self.template = ["案内"]
+        rospy.Subscriber("/gpt_string", String, self.gpt_callback)
 
         rospy.spin()
 
@@ -42,8 +42,12 @@ class openjtalk_node():
             print(f"jtalkでエラーが発生しました: {e}")
 
     def callback(self, data):
-            self.received_msg = data.data
-            self.speech_template_matching()
+        self.received_msg = data.data
+        self.speech_template_matching()
+
+    def gpt_callback(self, data):
+        self.gpt_msg = data.data
+        self.speech_gpt()
 
     def speech_template_matching(self):
         if "案内" in self.received_msg:
@@ -64,6 +68,9 @@ class openjtalk_node():
             print("写真を撮ります")
         else:
             pass
+
+    def speech_gpt(self):
+        self.jtalk(self.gpt_msg)
 
     # def start_srv(self, req):
     #     if req.data:
