@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <launch>
     <node pkg="timed_roslaunch" type="timed_roslaunch.sh"
-        args="2 $(find tokuron)/launch/speech_rec.launch"
+        args="2 $(find audio2string)/launch/speech_rec.launch"
         name="timed_roslaunch1" >      
     </node>
 
     <node pkg="timed_roslaunch" type="timed_roslaunch.sh"
-        args="5 $(find tokuron)/launch/camera_capture.launch"
+        args="5 $(find audio2string)/launch/camera_capture.launch"
         name="timed_roslaunch2" >      
     </node>
 </launch>

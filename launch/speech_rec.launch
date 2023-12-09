@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
 <launch>
     <arg name="script" default="speech_rec_chat.py"/>
-    <node pkg="tokuron" type="$(arg script)" name="speech_to_text" output="screen"/>
+    <node pkg="audio2string" type="$(arg script)" name="speech_to_text" output="screen"/>
 </launch>

@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-    <arg name="script1" default="speech_rec_chat.py"/>
-    <arg name="script2" default="camera_capture.py"/>
-    <node pkg="tokuron" type="$(arg script1)" name="speech_to_text" output="screen"/>
-    <node pkg="tokuron" type="$(arg script2)" name="camera_capture" output="screen"/>
-</launch>
