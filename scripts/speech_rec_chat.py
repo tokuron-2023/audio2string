@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 import rospy
-from std_srvs.srv import SetBool
 from std_msgs.msg import String
 import speech_recognition as sr
-import time
 
 class speech_to_text_node:
     def __init__(self):
@@ -17,8 +15,6 @@ class speech_to_text_node:
         self.sample_rate = 44100
         self.chunk_size = 512
 
-        self.nav_templates = ["案内", "ナビゲーション", "開始"]
-        self.img_templates = ["写真", "撮影"]
         self.chat_templates = ["こんにちは"]
 
         self.new_message_received = False
@@ -43,18 +39,6 @@ class speech_to_text_node:
             print("Google Speech Recognition could not understand audio")
             self.text = ""
         return self.text
-
-    def nav_template_matching(self, text):
-        for template in self.nav_templates:
-            if template in text:
-                return True
-        return False
-    
-    def img_template_matching(self, text):
-        for template in self.img_templates:
-            if template in text:
-                return True
-        return False
     
     def chat_template_matching(self, text):
         for template in self.chat_templates:
@@ -80,42 +64,6 @@ class speech_to_text_node:
                 print(text)
                 self.pub.publish(text)
                 rospy.loginfo("Text '{}' published".format(text))
-
-                if self.nav_template_matching(text):
-                    rospy.wait_for_service("start_nav")
-                    try: 
-                        start_nav = rospy.ServiceProxy("start_nav", SetBool)
-                        start_nav(True)
-                        # try:
-                        #     rospy.wait_for_service("/openjtalk/start_nav")
-                        #     jtalk_start_nav = rospy.ServiceProxy("/openjtalk/start_nav", SetBool)
-                        #     jtalk_start_nav(True)
-                        # except rospy.ServiceException as e:
-                        #     print("Service call failed: {0}".format(e))
-                        
-                        while self.new_message_received:
-                            pass
-
-                    except rospy.ServiceException as e:
-                        print("Service call failed: {0}".format(e))
-
-                elif self.img_template_matching(text):
-                    rospy.wait_for_service("capture_img")
-                    try: 
-                        capture_img = rospy.ServiceProxy("capture_img", SetBool)
-                        capture_img(True)
-                        # try:
-                        #     rospy.wait_for_service("/openjtalk/capture_img")
-                        #     jtalk_capture_img = rospy.ServiceProxy("/openjtalk/capture_img", SetBool)
-                        #     jtalk_capture_img(True)
-                        # except rospy.ServiceException as e:
-                        #     print("Service call failed: {0}".format(e))
-
-                        while self.new_message_received:
-                            pass
-
-                    except rospy.ServiceException as e:
-                        print("Service call failed: {0}".format(e))
 
                 # self.wait_for_hello()
                 self.rate.sleep()
