@@ -45,7 +45,11 @@ python3 speech_rec.py
 > **"こんにちは"と呼びかけない限り, 文字をpublishしません. また, serviceも投げません**  
 ```  
 python3 speech_rec_chat.py
-```  
+```
+or  
+```
+python3 speech_rec_srv.py
+```
 - 写真を取る
 > **写真**や**撮影**などの単語に反応して写真が撮れます  
 > 例）写真を撮ってください  
