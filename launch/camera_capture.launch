@@ -1,5 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-    <arg name="script" default="camera_capture.py"/>
-    <node pkg="audio2string" type="$(arg script)" name="camera_capture" output="screen"/>
-</launch>

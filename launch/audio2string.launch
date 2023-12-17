@@ -2,6 +2,6 @@
 <launch>
     <arg name="script1" default="speech_rec_chat.py"/>
     <arg name="script2" default="openjtalk.py"/>
-    <node pkg="audio2string" type="$(arg script1)" name="speech_to_text" output="screen"/>
-    <node pkg="audio2string" type="$(arg script2)" name="openjtalk" output="screen"/>
+    <node pkg="audio2string" type="$(arg script1)" name="speech_to_text" output="screen" respawn="true"/>
+    <node pkg="audio2string" type="$(arg script2)" name="openjtalk" output="screen" respawn="true"/>
 </launch>

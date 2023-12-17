@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="script1" default="camera_img_pub.py"/>
+    <arg name="script2" default="camera_img_sub.py"/>
+    <node pkg="audio2string" type="$(arg script1)" name="camera_publisher" output="screen"/>
+    <node pkg="audio2string" type="$(arg script2)" name="camera_subscriber" output="screen"/>
+</launch>
