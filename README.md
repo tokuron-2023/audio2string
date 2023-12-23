@@ -65,6 +65,4 @@ python3 openjtalk.py
 - まとめて起動
 ```
 roslaunch tokuron tokuron.launch
-```
-> launchで起動する場合, 撮影がされないためうまく動作しません  
-> 現在調査中...  
+```  
